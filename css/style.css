@@ -1,0 +1,26 @@
+.font-brandon-grotesque{
+  font-family: brandon-grotesque;
+  font-weight: 400;
+}
+
+.font-brandon-grotesque-ight {
+  font-family: brandon-grotesque;
+  font-weight: 300;
+}
+
+.font-brandon-grotesque-bold {
+  font-family: brandon-grotesque;
+  font-weight: 700;
+}
+
+.font-watchmen{
+  font-family: futura-pt-condensed;
+  font-weight: 800;
+}
+
+*{
+  font-family: futura-pt;
+  font-weight: 400;
+  background-color: black !important;
+  color: yellow;
+}
