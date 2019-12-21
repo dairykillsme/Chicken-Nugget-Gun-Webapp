@@ -18,9 +18,17 @@
   font-weight: 800;
 }
 
+.font-urbane{
+  font-family: urbane;
+  font-weight: 700;
+}
+
 *{
   font-family: futura-pt;
   font-weight: 400;
-  background-color: black !important;
-  color: yellow;
+  color: black;
+}
+
+body {
+  background-color: #ed1b24;
 }
