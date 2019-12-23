@@ -2,7 +2,26 @@ $(document).ready(function () {
   let Codes = {};
   const $StepTitle = $("#StepTitle");
   const $StepCode = $("#StepCode");
-  const webSocket = new WebSocket("ws://192.168.0.27:81/", ["arduino"]);
+  let webSocket = new WebSocket("ws://192.168.0.27:81/", ["arduino"]);
+  let loadingInterval;
+
+  loadingInterval = setInterval(function () {
+    switch ($StepCode.text()) {
+      case "•":
+        $StepCode.text("••");
+        break;
+      case "••":
+        $StepCode.text("•••");
+        break;
+      case "•••":
+        $StepCode.text("•");
+        break;
+    }
+  }, 1000)
+
+  setInterval(function(){
+    console.info("WebSocket Status:", webSocket.readyState);
+  },1000)
 
   function InitializeUserLink() {
     $StepTitle.html("Enter Code to Initialize Neural Link");
@@ -10,19 +29,45 @@ $(document).ready(function () {
   };
 
   function InitializeStandby() {
+    ShowControlPanel()
     $StepTitle.html("Chimpfkem Nunget Gun is in Standby");
-    $StepCode.html("Awaiting Command");
+    $StepCode.html("Awaiting Command .");
+    loadingInterval = setInterval(function() {
+      switch ($StepCode.text()){
+        case "Awaiting Command .":
+          $StepCode.text("Awaiting Command ..");
+          break;
+        case "Awaiting Command ..":
+          $StepCode.text("Awaiting Command ...");
+          break;
+        case "Awaiting Command ...":
+          $StepCode.text("Awaiting Command .");
+          break;
+      }
+    },1000);
   };
   
 
+  function ShowControlPanel() {
+    $("#SectionLaserSight").removeClass("d-none").addClass("fadeInLeft");
+    $("#SectionMagLock").removeClass("d-none").addClass("fadeInRight");
+    $("#SectionConsentCode").removeClass("d-none").addClass("fadeInLeft");
+    $("#SectionCalibrate").removeClass("d-none").addClass("fadeInRight");
+  };
+
+  ShowControlPanel()
+
   $("#LaserSightEnable").on("click", function () {
+    clearInterval(loadingInterval);
     if ($(this).attr("data-status") === "off") {
-      // websocket.send("LASERSIGHTON");
+      webSocket.send("LASERSIGHTON");
       console.log("LASERSIGHTON");
       $(this).text("Off").attr("data-status", "on")
       $("#LaserSightStatus").text("LASER SIGHT ON").toggleClass("text-success text-danger");
+      $StepCode.html("Laser Sight On");
     } else {
-      $("#LaserSightStatus").text("main.cpp:70:15: error: LaserSightDisable was not declared in this scope. ").toggleClass("text-success text-danger");
+      $("#LaserSightStatus").text("main.cpp:70:15: error: LaserSightDisable was not declared in this scope. ").removeClass("text-success").addClass("text-danger");
+      $StepCode.html("main.cpp:70:15: error: LaserSightDisable was not declared in this scope. ");
       Swal.fire({
         icon: "error",
         title: "FATAL ERROR: LaserSightDisable was not declared in this scope",
@@ -32,14 +77,16 @@ $(document).ready(function () {
   });
 
   $("#ToggleMagazineLock").on("click", function () {
+    clearInterval(loadingInterval);
+    $StepCode.html("Toggling Magazine");
     if ($(this).attr("data-status") === "locked"){
       console.log("MAGLOCKOFF");
-      // websocket.send("MAGLOCKOFF");
+      webSocket.send("MAGLOCKOFF");
       $("#ToggleMagazineLock").text("Lock").attr("data-status", "unlocked");
       $("#MagazineStatus").text("MAGAZINE UNLOCKED").toggleClass("text-success text-danger");
     } else {
       console.log("MAGLOCKON");
-      // websocket.send("MAGLOCKON");
+      webSocket.send("MAGLOCKON");
       $("#ToggleMagazineLock").text("Unlock").attr("data-status", "locked");
       $("#MagazineStatus").text("MAGAZINE LOCKED").toggleClass("text-success text-danger");
     }
@@ -47,23 +94,28 @@ $(document).ready(function () {
   });
 
   $("#GenerateConsentCode").on("click", function () {
-    $StepTitle.html("Waiting for target to enter Conset Code");
+    clearInterval(loadingInterval);
+    $StepTitle.html("Waiting for target to enter Consent Code");
     $StepCode.html(Codes.consentCode);
     // Display Consent Code and Title on screen
   });
 
   $("#Calibrate").on ("click", function () {
+    clearInterval(loadingInterval);
     // webSocket.send("CALIBRATE");
     $StepTitle.html("Calibrating. This may take several hours.");
     $StepCode.html("Place on a level surface and do not disturb.");
     // Send Calibration Signal to Node MCU
   });
-  
-  if (webSocket.readyState === 1){
-    console.log("Connected");
-  }
 
   webSocket.onopen = function (event) {
+    clearInterval(loadingInterval);
+    $StepTitle.html("Connected.");
+    $StepCode.html("Awaiting Server Response");
+  }
+
+  webSocket.onclose = function (event) {
+    webSocket = new WebSocket("ws://192.168.0.27:81/", ["arduino"]);
   }
 
   webSocket.onmessage = function (event) {
@@ -73,10 +125,7 @@ $(document).ready(function () {
       case "CODES":
         Codes = {
           standbyCode: messageArray[1],
-          reloadCode: messageArray[2],
-          laserCode: messageArray[3],
-          calibrationCode: messageArray[4],
-          consentCode: messageArray[5]
+          consentCode: messageArray[2]
         };
         InitializeUserLink();
         break;

@@ -14,6 +14,7 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
     integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
+  <link rel="stylesheet" href="/css/animate.css">
   <link rel="stylesheet" href="/css/style.css">
 
   <title>Chimpfkem Nunget Gun</title>
@@ -23,20 +24,20 @@
   <div class="container" style="margin-top: 5%;">
     <div class="row">
       <div class="col-12 text-center mb-5">
-        <img src="/McBlackwater.jpg" width="500" style="margin-left: 8.25em;">
+        <img src="/McBlackwater.jpg" class="mb-2" style="width: 66vw;">
         <h2 class="font-urbane text-white m-n4">Chimpfkem Nunget Gun&trade;</h2>
         <h3 class="font-urbane text-white mt-4">Safety Control Panel&reg;</h3>
       </div>
     </div>
     <div class="row">
         <div class="col-12 text-center text-white">
-          <h1 class="font-weight-bold mb-0 text-white" id="StepTitle">Awaiting Neural Link Code</h1>
-          <h1 class="mb-3 font-weight-bold font-brandon-grotesque text-white" id="StepCode">•••</h1>
+          <h1 class="font-weight-bold mb-0 text-white" id="StepTitle">Attempting Connection to McBlackwater</h1>
+          <h1 class="mb-3 font-weight-bold font-brandon-grotesque text-white" id="StepCode">•</h1>
         </div>
     </div>
     <div class="row">
-      <div class="col-6">
-        <div class="card mb-2">
+      <div class="col-12 col-md-6">
+        <div id="SectionLaserSight" class="card mb-2 d-none animated">
           <div class="card-header">
             <h3>Laser Sight Toggle</h3>
           </div>
@@ -46,8 +47,8 @@
           </div>
         </div>
       </div>
-      <div class="col-6">
-        <div class="card mb-2">
+      <div class="col-12 col-md-6">
+        <div id="SectionMagLock" class="card mb-2 d-none animated">
           <div class="card-header">
             <h3>Magazine Lock/Unlock</h3>
           </div>
@@ -57,8 +58,8 @@
           </div>
         </div>
       </div>
-      <div class="col-6">
-        <div class="card mb-2">
+      <div class="col-12 col-md-6">
+        <div id="SectionConsentCode" class="card mb-2 d-none animated">
           <div class="card-header">
             <h3>Generate Consent Code</h3>
           </div>
@@ -67,8 +68,8 @@
           </div>
         </div>
       </div>
-      <div class="col-6">
-        <div class="card mb-2">
+      <div class="col-12 col-md-6">
+        <div id="SectionCalibrate" class="card mb-2 d-none animated">
           <div class="card-header">
             <h3>Calibrate</h3>
           </div>
@@ -91,7 +92,10 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
     integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
   </script>
+  <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.12.0/css/all.css"
+    integrity="sha384-ekOryaXPbeCpWQNxMwSWVvQ0+1VrStoPJq54shlYhR8HzQgig1v5fas6YgOqLoKz" crossorigin="anonymous">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+  <script src="/js/progressbar.min.js"></script>
   <script src="/js/anime.min.js"></script>
   <script src="/js/app.js"></script>
 </body>
