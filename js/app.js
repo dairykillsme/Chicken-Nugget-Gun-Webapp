@@ -5,6 +5,9 @@ $(document).ready(function () {
   let webSocket = new WebSocket("ws://192.168.0.27:81/", ["arduino"]);
   let loadingInterval;
 
+  let AlarmOne;
+  let AlarmTwo;
+
   loadingInterval = setInterval(function () {
     switch ($StepCode.text()) {
       case "•":
@@ -57,6 +60,29 @@ $(document).ready(function () {
 
   ShowControlPanel()
 
+  function AlarmsOn() {
+    $(".alarm-flash, .alarm-light-wrapper-left, .alarm-light-wrapper-right").removeClass("d-none");
+    anime({
+      targets: ".alarm-flash",
+      opacity: 0,
+      loop: true,
+      duration: 500,
+      direction: "alternate",
+      easing: "easeInOutSine"
+    })
+  }
+
+  function InitializeFiringMode() {
+    AlarmOne = new Audio("Alarm.mp3");
+    AlarmTwo = new Audio("Alarm2.mp3");
+    AlarmOne.play();
+    AlarmTwo.loop = true;
+    AlarmTwo.play();
+    $StepTitle.html("CNG IS ARMED. READY TO FIRE");
+    $StepCode.html("Someone boutta get it");
+    AlarmsOn();
+  }
+
   $("#LaserSightEnable").on("click", function () {
     clearInterval(loadingInterval);
     if ($(this).attr("data-status") === "off") {
@@ -100,12 +126,21 @@ $(document).ready(function () {
     // Display Consent Code and Title on screen
   });
 
-  $("#Calibrate").on ("click", function () {
+  $("#Calibrate").on("click", function () {
     clearInterval(loadingInterval);
-    // webSocket.send("CALIBRATE");
+    webSocket.send("CALIBRATE");
     $StepTitle.html("Calibrating. This may take several hours.");
     $StepCode.html("Place on a level surface and do not disturb.");
     // Send Calibration Signal to Node MCU
+  });
+
+  $("#AlarmsOn").on("click", function (){
+    InitializeFiringMode();
+  });
+
+  $("#AlarmsOff").on("click", function () {
+    AlarmOne.pause();
+    AlarmTwo.pause();
   });
 
   webSocket.onopen = function (event) {
@@ -132,6 +167,9 @@ $(document).ready(function () {
       case "STNDBY":
         InitializeStandby();
         break;
+      case "CONSENT":
+        InitializeFiringMode();
+        break
     }
   };
 });

@@ -31,4 +31,51 @@
 
 body {
   background-color: #ed1b24;
+  overflow-x: hidden;
+}
+
+.alarm-light-wrapper-left {
+  position: absolute;
+  top: 50%;
+  left: 25%;
+  width: 10px;
+  height: 10px;
+  background-color: gray;
+  z-index: 10;
+}
+
+.alarm-light-wrapper-right {
+  position: absolute;
+  top: 50%;
+  left: 75%;
+  width: 10px;
+  height: 10px;
+  background-color: gray;
+  z-index: 10;
+}
+
+.light-beam-top{
+  position: absolute;
+  width: 100vw;
+  height: 100vw;
+  background-color: rgba(255, 0, 0, 0.7);
+}
+
+.light-beam-bottom {
+  position: absolute;
+  width: 100vw;
+  height: 100vw;
+  background-color: rgba(255, 0, 0, 0.7);
+  bottom: 0;
+  right: 0;
+}
+
+.alarm-flash {
+  position: absolute;
+  width: 100vw;
+  height: 150vh;
+  top: 0px;
+  background-color: white;
+  z-index: 9999;
+  opacity: 1;
 }
